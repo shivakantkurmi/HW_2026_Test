@@ -22,11 +22,8 @@ Welcome to **Doofus Adventure**! Guide Doofus across a series of green platforms
 ## 🎥 Gameplay Video
 
 
+https://github.com/user-attachments/assets/6bfbeb96-4d09-4c46-b410-d4308ede28f5
 
-<video width="640" height="360" controls>
-  <source src="public/gameplay_video.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
 
 
 
