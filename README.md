@@ -12,7 +12,6 @@ Welcome to **Doofus Adventure**! Guide Doofus across a series of green platforms
 
 ## 📸 Screenshots
 
-*(Drop your screenshot images into the `public` folder and rename them to match the filenames below)*
 
 ![Screenshot 1](public/screenshot1.png)
 
@@ -22,14 +21,14 @@ Welcome to **Doofus Adventure**! Guide Doofus across a series of green platforms
 
 ## 🎥 Gameplay Video
 
-*(Drop your video file into the `public` folder and rename it to match the filename below)*
+
 
 <video width="640" height="360" controls>
   <source src="public/gameplay_video.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
-*(Alternatively, if you upload your video to YouTube, you can just paste the link here!)*
+
 
 ## 🛠️ Built With
 * **Engine:** Unity 6.3 LTS
