@@ -17,7 +17,13 @@ namespace Doofus.Screens
             GameEvents.OnScoreChanged += HandleScoreChanged;
             GameEvents.OnGameStart += HandleGameStart;
             GameEvents.OnGameOver += HandleGameOver;
+            GameEvents.OnGameReset += HandleGameReset;
 
+            if (panel != null) panel.SetActive(false);
+        }
+
+        private void HandleGameReset()
+        {
             if (panel != null) panel.SetActive(false);
         }
 

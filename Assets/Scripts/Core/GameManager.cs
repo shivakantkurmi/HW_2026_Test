@@ -16,7 +16,7 @@ namespace Doofus.Core
     // everything else reacts to GameEvents rather than being driven directly.
     public class GameManager : MonoBehaviour
     {
-        [SerializeField] private PlayerRig doofus;
+        [SerializeField] private DoofusController doofus;
         [SerializeField] private PulpitSpawner spawner;
         [SerializeField] private float doofusSpawnHeightOffset = 1f;
 
@@ -37,7 +37,7 @@ namespace Doofus.Core
             if (State == GameState.Playing) return;
             if (doofus == null || spawner == null)
             {
-                Debug.LogError("[GameManager] Missing Doofus or Spawner reference.");
+                Debug.LogError($"[GameManager] Missing Doofus ({doofus != null}) or Spawner ({spawner != null}) reference.");
                 return;
             }
 

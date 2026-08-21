@@ -21,7 +21,13 @@ namespace Doofus.Screens
             // GameObject, and deactivating it below would otherwise skip OnEnable
             // entirely on this first pass, silently dropping this subscription.
             GameEvents.OnGameOver += HandleGameOver;
+            GameEvents.OnGameReset += HandleGameReset;
 
+            if (panel != null) panel.SetActive(false);
+        }
+
+        private void HandleGameReset()
+        {
             if (panel != null) panel.SetActive(false);
         }
 

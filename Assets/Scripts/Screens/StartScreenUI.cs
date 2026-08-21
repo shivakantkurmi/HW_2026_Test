@@ -18,7 +18,13 @@ namespace Doofus.Screens
             // GameOverUI, which must subscribe in Awake since they deactivate their own
             // GameObject there (which would otherwise skip OnEnable on the first pass).
             GameEvents.OnGameStart += HandleGameStart;
+            GameEvents.OnGameReset += HandleGameReset;
 
+            if (panel != null) panel.SetActive(true);
+        }
+
+        private void HandleGameReset()
+        {
             if (panel != null) panel.SetActive(true);
         }
 
