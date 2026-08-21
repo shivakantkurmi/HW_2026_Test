@@ -57,26 +57,16 @@ namespace Doofus.CameraSystem
 
         private void LateUpdate()
         {
-            if (target == null) return;
-
-            Camera cam = _camera ??= GetComponent<Camera>();
-            if (cam == null) return;
-
-            Vector3 viewportPos = cam.WorldToViewportPoint(target.position);
-
-            // Behind the camera entirely (shouldn't normally happen given the dead zone
-            // keeps pulling the anchor in, but treat it as maximally out of bounds rather
-            // than silently doing nothing if it ever does).
-            bool behindCamera = viewportPos.z <= 0f;
-            Vector2 offsetFromCenter = new Vector2((viewportPos.x - 0.5f) * 2f, (viewportPos.y - 0.5f) * 2f);
-            float screenDistance = offsetFromCenter.magnitude;
-
-            if (behindCamera || screenDistance > deadZoneFraction)
+            if (target == null)
             {
-                Vector3 targetFlat = new Vector3(target.position.x, 0f, target.position.z);
-                _anchor = Vector3.SmoothDamp(_anchor, targetFlat, ref _velocity, smoothTime);
-                transform.position = _anchor + offsetFromAnchor;
+                var player = GameObject.FindGameObjectWithTag("Player");
+                if (player != null) target = player.transform;
+                else return;
             }
+
+            Vector3 targetFlat = new Vector3(target.position.x, 0f, target.position.z);
+            _anchor = Vector3.SmoothDamp(_anchor, targetFlat, ref _velocity, smoothTime);
+            transform.position = _anchor + offsetFromAnchor;
         }
     }
 }

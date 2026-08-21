@@ -18,9 +18,6 @@ namespace Doofus.Pulpits
         [SerializeField] private Pulpit pulpitPrefab;
         [SerializeField] private float pulpitSize = 9f;
         [SerializeField] private float pulpitHeight = 0f;
-        [SerializeField] private float minSpawnLifeFraction = 0.4f;
-        [SerializeField] private float maxSpawnLifeFraction = 0.7f;
-        [SerializeField] private int scoreForMaxSpawnPercent = 50;
         private const int MaxActivePulpits = 2;
 
         private readonly List<Pulpit> _activePulpits = new List<Pulpit>();
@@ -62,13 +59,14 @@ namespace Doofus.Pulpits
 
         private void HandleGameStart()
         {
+            Debug.Log("[PulpitSpawner] HandleGameStart: Starting spawner.");
             _config = GameConfigLoader.Instance != null && GameConfigLoader.Instance.IsLoaded
                 ? GameConfigLoader.Instance.Config
                 : new GameConfig();
 
             _running = true;
 
-            SpawnPulpit(Vector2Int.zero);
+            SpawnPulpit(Vector2Int.zero, instant: true);
             FirstPulpit = _activePulpits[0];
             FirstPulpit.MarkPreScored();
 
@@ -81,6 +79,7 @@ namespace Doofus.Pulpits
         // until Retry).
         private void HandleGameOver()
         {
+            Debug.Log("[PulpitSpawner] HandleGameOver: Stopping spawner.");
             _running = false;
             if (_spawnLoop != null)
             {
@@ -91,6 +90,7 @@ namespace Doofus.Pulpits
 
         private void HandleGameReset()
         {
+            Debug.Log("[PulpitSpawner] HandleGameReset: Destroying all pulpits.");
             _running = false;
             if (_spawnLoop != null)
             {
@@ -123,9 +123,10 @@ namespace Doofus.Pulpits
                 // happen since a slot only frees up when a pulpit despawns, and its
                 // replacement is watched from then on), spawn immediately rather than
                 // stalling the game with no pulpits.
+                // A new pulpit spawns when the previous one has been alive for pulpit_spawn_time seconds.
                 bool ready = _lastSpawnedPulpit == null
                     || !_lastSpawnedPulpit.IsAlive
-                    || _lastSpawnedPulpit.LifeFraction >= GetSpawnLifeFractionThreshold();
+                    || _lastSpawnedPulpit.Elapsed >= _config.pulpit_data.pulpit_spawn_time;
 
                 if (ready)
                 {
@@ -139,15 +140,7 @@ namespace Doofus.Pulpits
             }
         }
 
-        private float GetSpawnLifeFractionThreshold()
-        {
-            float t = scoreForMaxSpawnPercent > 0
-                ? Mathf.Clamp01((float)_currentScore / scoreForMaxSpawnPercent)
-                : 1f;
-            return Mathf.Lerp(minSpawnLifeFraction, maxSpawnLifeFraction, t);
-        }
-
-        private void SpawnPulpit(Vector2Int gridPos)
+        private void SpawnPulpit(Vector2Int gridPos, bool instant = false)
         {
             if (pulpitPrefab == null)
             {
@@ -161,7 +154,7 @@ namespace Doofus.Pulpits
             float min = _config.pulpit_data.min_pulpit_destroy_time;
             float max = Mathf.Max(min, _config.pulpit_data.max_pulpit_destroy_time);
             float lifetime = Random.Range(min, max);
-            pulpit.Initialize(gridPos, lifetime);
+            pulpit.Initialize(gridPos, lifetime, instant);
 
             _activePulpits.Add(pulpit);
             _lastGridPosition = gridPos;

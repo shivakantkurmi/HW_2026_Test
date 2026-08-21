@@ -24,6 +24,7 @@ namespace Doofus.Core
 
         private void OnEnable()
         {
+            Debug.Log("[GameManager] OnEnable: Subscribing to OnPlayerFell.");
             GameEvents.OnPlayerFell += HandlePlayerFell;
         }
 
@@ -34,6 +35,7 @@ namespace Doofus.Core
 
         public void StartGame()
         {
+            Debug.Log($"[GameManager] StartGame called. Current State: {State}");
             if (State == GameState.Playing) return;
             if (doofus == null || spawner == null)
             {
@@ -43,8 +45,6 @@ namespace Doofus.Core
 
             State = GameState.Playing;
 
-            GameEvents.RaiseGameReset();
-
             Vector3 spawnPos = spawner.GetOriginWorldPosition() + Vector3.up * doofusSpawnHeightOffset;
             doofus.ResetState(spawnPos);
 
@@ -53,13 +53,17 @@ namespace Doofus.Core
 
         public void RestartGame()
         {
-            StartGame();
+            Debug.Log("[GameManager] RestartGame called.");
+            State = GameState.StartScreen;
+            GameEvents.RaiseGameReset();
         }
 
         private void HandlePlayerFell()
         {
+            Debug.Log("[GameManager] HandlePlayerFell received.");
             if (State != GameState.Playing) return;
             State = GameState.GameOver;
+            Debug.Log("[GameManager] State changed to GameOver.");
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Doofus.Player
     // Watches Doofus's height and ends the game the moment he falls off/through a pulpit.
     public class DoofusFallDetector : MonoBehaviour
     {
-        [SerializeField] private float fallThresholdY = -15f;
+        [SerializeField] private float fallThresholdY = -2f;
 
         private bool _armed;
         private bool _hasFallen;

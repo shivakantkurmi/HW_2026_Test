@@ -12,6 +12,7 @@ namespace Doofus.Screens
 
         private void Awake()
         {
+            Debug.Log("[StartScreenUI] Awake.");
             if (startButton != null) startButton.onClick.AddListener(HandleStartClicked);
 
             // Subscribed here rather than OnEnable for consistency with GameplayHUD/
@@ -25,16 +26,20 @@ namespace Doofus.Screens
 
         private void HandleGameReset()
         {
+            Debug.Log("[StartScreenUI] HandleGameReset: Showing panel.");
             if (panel != null) panel.SetActive(true);
         }
 
         private void HandleStartClicked()
         {
+            Debug.Log("[StartScreenUI] HandleStartClicked: Hiding panel and starting game.");
+            if (panel != null) panel.SetActive(false);
             if (gameManager != null) gameManager.StartGame();
         }
 
         private void HandleGameStart()
         {
+            Debug.Log("[StartScreenUI] HandleGameStart: Hiding panel.");
             if (panel != null) panel.SetActive(false);
         }
     }

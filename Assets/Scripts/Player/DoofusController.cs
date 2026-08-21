@@ -48,8 +48,17 @@ namespace Doofus.Player
         }
 
         private void HandleConfigReady(GameConfig config) => _speed = config.player_data.speed;
-        private void HandleGameStart() => _movementEnabled = true;
-        private void HandleGameStop() => _movementEnabled = false;
+        private void HandleGameStart()
+        {
+            Debug.Log("[DoofusController] HandleGameStart: Enabling movement.");
+            _movementEnabled = true;
+        }
+        
+        private void HandleGameStop()
+        {
+            Debug.Log("[DoofusController] HandleGameStop: Disabling movement.");
+            _movementEnabled = false;
+        }
 
         private void Update()
         {

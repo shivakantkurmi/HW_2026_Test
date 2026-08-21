@@ -14,8 +14,6 @@ namespace Doofus.Pulpits
     public class Pulpit : MonoBehaviour
     {
         [SerializeField] private Renderer[] renderers;
-        [SerializeField] private Color freshColor = new Color(0.05f, 0.85f, 0.25f);
-        [SerializeField] private Color dangerColor = new Color(0.9f, 0.15f, 0.1f);
         [SerializeField] private TextMesh timerText;
         [SerializeField] private float spawnGrowDuration = 0.4f;
         [SerializeField] private float despawnShrinkDuration = 0.4f;
@@ -25,9 +23,9 @@ namespace Doofus.Pulpits
         public bool IsAlive { get; private set; } = true;
 
         // Fraction of this pulpit's randomized lifetime that has elapsed (0 = just
-        // spawned, 1 = about to despawn). PulpitSpawner watches this to decide when to
-        // spawn the next pulpit.
+        // spawned, 1 = about to despawn).
         public float LifeFraction => _lifetime > 0f ? Mathf.Clamp01(_elapsed / _lifetime) : 1f;
+        public float Elapsed => _elapsed;
 
         private bool _hasBeenScored;
         private bool _hasLanded;
@@ -53,7 +51,7 @@ namespace Doofus.Pulpits
             _fullScale = transform.localScale;
         }
 
-        public void Initialize(Vector2Int gridPosition, float lifetimeSeconds)
+        public void Initialize(Vector2Int gridPosition, float lifetimeSeconds, bool instant = false)
         {
             GridPosition = gridPosition;
             IsAlive = true;
@@ -68,14 +66,20 @@ namespace Doofus.Pulpits
                 if (c != null) c.enabled = true;
             }
 
-            SetColor(freshColor);
             UpdateTimerText(_lifetime);
 
-            // Spawn in small (at the grid cell's center, since scaling around the
-            // object's own pivot grows it outward evenly) and grow to full size.
-            if (_scaleRoutine != null) StopCoroutine(_scaleRoutine);
-            transform.localScale = SmallScale();
-            _scaleRoutine = StartCoroutine(AnimateScale(transform.localScale, _fullScale, spawnGrowDuration, destroyAfter: false));
+            if (instant)
+            {
+                transform.localScale = _fullScale;
+            }
+            else
+            {
+                // Spawn in small (at the grid cell's center, since scaling around the
+                // object's own pivot grows it outward evenly) and grow to full size.
+                if (_scaleRoutine != null) StopCoroutine(_scaleRoutine);
+                transform.localScale = SmallScale();
+                _scaleRoutine = StartCoroutine(AnimateScale(transform.localScale, _fullScale, spawnGrowDuration, destroyAfter: false));
+            }
 
             if (_lifetimeRoutine != null) StopCoroutine(_lifetimeRoutine);
             _lifetimeRoutine = StartCoroutine(LifetimeCountdown());
@@ -94,14 +98,6 @@ namespace Doofus.Pulpits
             {
                 _elapsed += Time.deltaTime;
                 UpdateTimerText(_lifetime - _elapsed);
-
-                if (_hasLanded)
-                {
-                    float denom = Mathf.Max(0.01f, _lifetime - _elapsedAtLanding);
-                    float t = Mathf.Clamp01((_elapsed - _elapsedAtLanding) / denom);
-                    SetColor(Color.Lerp(freshColor, dangerColor, t));
-                }
-
                 yield return null;
             }
 
@@ -112,14 +108,6 @@ namespace Doofus.Pulpits
         {
             if (timerText == null) return;
             timerText.text = Mathf.Max(0f, remaining).ToString("F1");
-        }
-
-        private void SetColor(Color color)
-        {
-            foreach (Renderer r in renderers)
-            {
-                if (r != null) r.material.color = color;
-            }
         }
 
         private void Despawn()
