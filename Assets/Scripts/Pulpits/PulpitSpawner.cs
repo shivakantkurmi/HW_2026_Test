@@ -1,3 +1,5 @@
+// Author: Shivakant kurmi
+// Summary: Spawns and manages the active platforms in the game based on configuration data.
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -59,7 +61,6 @@ namespace Doofus.Pulpits
 
         private void HandleGameStart()
         {
-            Debug.Log("[PulpitSpawner] HandleGameStart: Starting spawner.");
             _config = GameConfigLoader.Instance != null && GameConfigLoader.Instance.IsLoaded
                 ? GameConfigLoader.Instance.Config
                 : new GameConfig();
@@ -79,7 +80,6 @@ namespace Doofus.Pulpits
         // until Retry).
         private void HandleGameOver()
         {
-            Debug.Log("[PulpitSpawner] HandleGameOver: Stopping spawner.");
             _running = false;
             if (_spawnLoop != null)
             {
@@ -90,7 +90,6 @@ namespace Doofus.Pulpits
 
         private void HandleGameReset()
         {
-            Debug.Log("[PulpitSpawner] HandleGameReset: Destroying all pulpits.");
             _running = false;
             if (_spawnLoop != null)
             {
@@ -144,7 +143,6 @@ namespace Doofus.Pulpits
         {
             if (pulpitPrefab == null)
             {
-                Debug.LogError("[PulpitSpawner] No pulpit prefab assigned.");
                 return;
             }
 

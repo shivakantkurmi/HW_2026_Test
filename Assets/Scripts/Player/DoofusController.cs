@@ -1,3 +1,5 @@
+// Author: Shivakant kurmi
+// Summary: Handles player input and physical movement of the character.
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Doofus.Config;
@@ -50,13 +52,12 @@ namespace Doofus.Player
         private void HandleConfigReady(GameConfig config) => _speed = config.player_data.speed;
         private void HandleGameStart()
         {
-            Debug.Log("[DoofusController] HandleGameStart: Enabling movement.");
+            _moveInput = Vector3.zero;
             _movementEnabled = true;
         }
         
         private void HandleGameStop()
         {
-            Debug.Log("[DoofusController] HandleGameStop: Disabling movement.");
             _movementEnabled = false;
         }
 
@@ -96,8 +97,18 @@ namespace Doofus.Player
             _moveInput = Vector3.zero;
             _rigidbody.linearVelocity = Vector3.zero;
             _rigidbody.angularVelocity = Vector3.zero;
+            
+            // If the old CharacterController is still attached, it blocks direct position changes.
+            var cc = GetComponent<CharacterController>();
+            if (cc != null) cc.enabled = false;
+
+            transform.position = position;
             _rigidbody.position = position;
+            
+            transform.rotation = Quaternion.identity;
             _rigidbody.rotation = Quaternion.identity;
+
+            if (cc != null) cc.enabled = true;
         }
     }
 }

@@ -1,3 +1,5 @@
+// Author: Shivakant kurmi
+// Summary: Manages the Game Over screen and handles restarting the game.
 using UnityEngine;
 using UnityEngine.UI;
 using Doofus.Core;
@@ -15,7 +17,6 @@ namespace Doofus.Screens
 
         private void Awake()
         {
-            Debug.Log("[GameOverUI] Awake.");
             if (retryButton != null) retryButton.onClick.AddListener(HandleRetryClicked);
 
             // Subscribing here (not OnEnable) is deliberate: 'panel' is this same
@@ -29,13 +30,11 @@ namespace Doofus.Screens
 
         private void HandleGameReset()
         {
-            Debug.Log("[GameOverUI] HandleGameReset: Hiding panel.");
             if (panel != null) panel.SetActive(false);
         }
 
         private void HandleGameOver()
         {
-            Debug.Log("[GameOverUI] HandleGameOver: Showing panel.");
             if (finalScoreText != null && scoreManager != null)
             {
                 finalScoreText.text = $"Final Score: {scoreManager.Score}";
@@ -45,7 +44,6 @@ namespace Doofus.Screens
 
         private void HandleRetryClicked()
         {
-            Debug.Log("[GameOverUI] HandleRetryClicked: Restarting game.");
             if (panel != null) panel.SetActive(false);
             if (gameManager != null) gameManager.RestartGame();
         }

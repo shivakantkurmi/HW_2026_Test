@@ -1,3 +1,5 @@
+// Author: Shivakant kurmi
+// Summary: Smoothly follows the player's position while ignoring minor movements.
 using UnityEngine;
 using Doofus.Core;
 

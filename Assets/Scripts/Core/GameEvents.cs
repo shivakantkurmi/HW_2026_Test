@@ -1,3 +1,5 @@
+// Author: Shivakant kurmi
+// Summary: A static event bus for broadcasting game state changes globally.
 using System;
 
 namespace Doofus.Core

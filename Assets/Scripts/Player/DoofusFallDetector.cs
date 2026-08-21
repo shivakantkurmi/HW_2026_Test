@@ -1,3 +1,5 @@
+// Author: Shivakant kurmi
+// Summary: Detects when the player falls off the platforms and triggers a Game Over.
 using UnityEngine;
 using Doofus.Core;
 

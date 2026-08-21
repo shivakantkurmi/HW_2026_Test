@@ -1,3 +1,5 @@
+// Author: Shivakant kurmi
+// Summary: Tracks the player's score and triggers UI updates when it changes.
 using UnityEngine;
 using Doofus.Core;
 

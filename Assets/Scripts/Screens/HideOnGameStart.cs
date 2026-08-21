@@ -1,3 +1,5 @@
+// Author: Shivakant kurmi
+// Summary: Automatically hides menu platforms or objects when the game actually begins.
 using UnityEngine;
 using Doofus.Core;
 

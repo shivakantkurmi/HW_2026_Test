@@ -1,3 +1,5 @@
+// Author: Shivakant kurmi
+// Summary: Downloads and parses the game's JSON configuration file.
 using System;
 using System.Collections;
 using System.IO;
@@ -49,9 +51,11 @@ namespace Doofus.Config
                 {
                     loaded = TryParse(request.downloadHandler.text);
                 }
-                else
+                
+                if (request.result != UnityWebRequest.Result.Success)
                 {
-                    Debug.LogWarning($"[GameConfigLoader] Failed to fetch config from '{path}': {request.error}. Using defaults.");
+                    Config = new GameConfig();
+                    IsLoaded = true;
                 }
             }
             else
@@ -60,9 +64,10 @@ namespace Doofus.Config
                 {
                     loaded = TryParse(File.ReadAllText(path));
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    Debug.LogWarning($"[GameConfigLoader] Failed to read config at '{path}': {e.Message}. Using defaults.");
+                    Config = new GameConfig();
+                    IsLoaded = true;
                 }
             }
 
@@ -75,26 +80,26 @@ namespace Doofus.Config
         {
             if (string.IsNullOrWhiteSpace(json))
             {
-                Debug.LogWarning("[GameConfigLoader] Config file was empty. Using defaults.");
+                Config = new GameConfig();
+                IsLoaded = true;
                 return null;
             }
 
             try
             {
                 GameConfig parsed = JsonUtility.FromJson<GameConfig>(json);
-                if (parsed == null)
+                if (Config == null)
                 {
-                    Debug.LogWarning("[GameConfigLoader] Config parsed to null. Using defaults.");
-                    return null;
+                    Config = new GameConfig();
                 }
 
                 parsed.player_data ??= new PlayerData();
                 parsed.pulpit_data ??= new PulpitData();
                 return parsed;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Debug.LogWarning($"[GameConfigLoader] Malformed config JSON: {e.Message}. Using defaults.");
+                Config = new GameConfig();
                 return null;
             }
         }

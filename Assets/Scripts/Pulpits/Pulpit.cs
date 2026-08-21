@@ -1,3 +1,5 @@
+// Author: Shivakant kurmi
+// Summary: Manages the behavior, lifetime, and visual scaling of individual platforms.
 using System.Collections;
 using UnityEngine;
 using Doofus.Core;

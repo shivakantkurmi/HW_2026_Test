@@ -1,3 +1,5 @@
+// Author: Shivakant kurmi
+// Summary: Defines the data structure for the game's JSON configuration file.
 using System;
 
 namespace Doofus.Config

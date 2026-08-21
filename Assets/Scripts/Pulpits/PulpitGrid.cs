@@ -1,3 +1,5 @@
+// Author: Shivakant kurmi
+// Summary: Calculates grid-aligned spawn positions for platforms to prevent overlap.
 using System.Collections.Generic;
 using UnityEngine;
 
