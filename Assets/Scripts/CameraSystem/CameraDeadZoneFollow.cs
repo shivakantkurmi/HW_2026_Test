@@ -3,31 +3,8 @@ using Doofus.Core;
 
 namespace Doofus.CameraSystem
 {
-    // Perspective chase camera: rests at a fixed offset behind and above the target,
-    // tilted down at a constant pitch angle - deliberately NOT rotating to track the
-    // target's facing direction (kept fixed per earlier direction, rather than orbiting
-    // like the third-person controller's own look camera would).
-    //
-    // Pulled back far (offsetFromAnchor) rather than sitting close, specifically so the
-    // current pulpit (9x9) and an adjacent one (also 9x9, spawned in any of the 4 cardinal
-    // directions - the layout is random) both stay in frame together. Field of view is
-    // read straight off the Camera component - not managed here - so it stays in sync
-    // with whatever's set directly on Main Camera.
-    //
-    // The dead zone is evaluated in SCREEN space (via WorldToViewportPoint), not world
-    // space. A flat world-space XZ distance doesn't correspond to what's actually visible
-    // once the camera sits at an angle: the same world-space movement toward/away from the
-    // camera (compressed by perspective at this pitch) shows up very differently on screen
-    // than the same movement side to side, so a world-distance threshold let the target
-    // wander out of frame in some directions while still reading as "inside the dead zone"
-    // in others. Checking the real projected viewport position fixes that regardless of
-    // direction.
-    //
-    // Moves the camera directly in world space rather than the shared CameraController
-    // parent - Doofus is a sibling under that same parent, so moving the parent would
-    // also drag Doofus's world position along with it and fight the CharacterController's
-    // own movement. Resets to the world origin - where Doofus always respawns - whenever
-    // the game resets/restarts.
+    // Name: Shivakant Kurmi
+    
     public class CameraDeadZoneFollow : MonoBehaviour
     {
         [SerializeField] private Transform target;
